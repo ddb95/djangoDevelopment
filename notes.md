@@ -146,4 +146,26 @@ Working directly with SQL can be quite cumbersome, so to make your life easier, 
     
         $ python3 manage.py showmigrations
 
-11. 
+<br>
+<h1>Creating Admin User</h1>
+
+1. Go to your project and in your terminal
+
+       $ python3 manage.py createsuperuser
+
+2. Redirect to <b>http://localhost:8000/admin/</b>
+
+3. Enter the username and password
+
+<br>
+<h1>Make my apps modifiable in admin sections</h1>
+
+1. But where’s our poll app? It’s not displayed on the admin index page. One more thing to do: we need to tell the admin that Question objects have an admin interface. To do this, open the polls/admin.py file, and edit it to look like this:
+
+       from .models import Question
+       admin.site.register(Question)
+
+2. You can add and change the Models by clicking on the model name
+
+<br>
+<h1>Views</h1>
