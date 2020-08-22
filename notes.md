@@ -160,7 +160,7 @@ Working directly with SQL can be quite cumbersome, so to make your life easier, 
 <br>
 <h1>Make my apps modifiable in admin sections</h1>
 
-1. But where’s our poll app? It’s not displayed on the admin index page. One more thing to do: we need to tell the admin that Question objects have an admin interface. To do this, open the polls/admin.py file, and edit it to look like this:
+1. But where’s our poll app? It’s not displayed on the admin index page. One more thing to do: we need to tell the admin that Question objects have an admin interface. To do this, open the <b>polls/admin.py</b> file, and edit it to look like this:
 
        from .models import Question
        admin.site.register(Question)
@@ -168,4 +168,65 @@ Working directly with SQL can be quite cumbersome, so to make your life easier, 
 2. You can add and change the Models by clicking on the model name
 
 <br>
+<h1>Use Your DbShell to see your Models</h1>
+
+1. Open your terminal and open your dbshell
+
+       $ python3 manage.py shell
+
+2. Now import your Models and work on it
+
+Import the model classes we just wrote.
+
+    # No questions are in the system yet.
+    >>> Question.objects.all()
+    <QuerySet []>
+
+    # Create a new Question.
+    # Support for time zones is enabled in the default settings file, so
+    # Django expects a datetime with tzinfo for pub_date. Use timezone.now()
+    # instead of datetime.datetime.now() and it will do the right thing.
+    >>> from django.utils import timezone
+    >>> q = Question(question_text="What's new?", pub_date=timezone.now())
+
+    # Save the object into the database. You have to call save() explicitly.
+    >>> q.save()
+
+    # Now it has an ID.
+    >>> q.id
+    1
+
+    # Access model field values via Python attributes.
+    >>> q.question_text
+    "What's new?"
+    >>> q.pub_date
+    datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=<UTC>)
+
+    # Change values by changing the attributes, then calling save().
+    >>> q.question_text = "What's up?"
+    >>> q.save()
+
+    # objects.all() displays all the questions in the database.
+    >>> Question.objects.all()
+    <QuerySet [<Question: Question object (1)>]>
+
+3. <b><Question: Question object (1)></b> isn’t a helpful representation of this object. Let’s fix that by editing the Question model (in the polls/models.py file) and adding a __str__() method to both Question and Choice:
+<br>
+Open the <b>polls/models.py</b> 
+
+       class Question(models.Model):
+       # ...
+            def __str__(self):
+                return self.question_text
+
+        class Choice(models.Model):
+            # ...
+            def __str__(self):
+                return self.choice_text
+<br>
 <h1>Views</h1>
+<b>Creating user interfaces</b>
+
+To get from a URL to a view, Django uses what are known as ‘URLconfs’. A URLconf maps URL patterns to views.
+<br>
+1. 
