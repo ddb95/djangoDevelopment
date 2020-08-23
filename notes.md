@@ -272,3 +272,45 @@ To get from a URL to a view, Django uses what are known as ‘URLconfs’. A URL
             'polls',
             'silchar'
         ]
+
+<br>
+<br>
+<br>
+<h1>Django REST Framework</h1>
+Django REST framework helps us to build RESTful Web Services flexibly.
+
+<br>
+<br>
+
+1. Create a new Project
+
+2. Install Django Rest Framework
+
+       $ pip3 install djangorestframework
+
+3. Install markdown and django filter
+        
+        $ pip install markdown 
+        $ pip install django-filter
+
+4. Go to <b>project/settings.py</b> and add the following
+
+        INSTALLED_APPS = [
+            ...
+            'rest_framework',
+        ]
+
+<b>REST Framework has been added successfully</b>
+
+
+<br>
+<br>
+<br>
+
+<h1>Connect Django project to MongoDB database</h1>
+
+1. Install Djongo
+        
+        $ pip3 install djongo
+
+2. 
