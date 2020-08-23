@@ -229,4 +229,46 @@ Open the <b>polls/models.py</b>
 
 To get from a URL to a view, Django uses what are known as ‘URLconfs’. A URLconf maps URL patterns to views.
 <br>
-1. 
+<h3>Rendering a HTML page</h3>
+
+1. Go to <b>app/views.py</b> and add a function
+
+       from django.shortcuts import render
+
+       def hello_world(request):
+           return render(request, 'hello_world.html', {})
+
+2. In the <b>app/urls.py</b> add the view created
+
+       from django.urls import path, include
+       from . import views
+
+       urlpatterns = [
+            path('blog', views.blog, name='blog')
+        ]
+
+3. In your <b>project/urls.py</b> add the route
+
+        from django.contrib import admin
+        from django.urls import path, include
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('polls/', include('polls.urls')),
+            path('silchar/', include('silchar.urls')),
+            path('historicalData/', include('historical_data.urls'))
+        ]
+
+4. In your <b>project/settings.py</b> add the application in <b>INSTALLED_APPS</b>
+
+        INSTALLED_APPS = [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'historical_data',
+            'polls',
+            'silchar'
+        ]
