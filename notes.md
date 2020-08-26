@@ -313,4 +313,47 @@ Django REST framework helps us to build RESTful Web Services flexibly.
         
         $ pip3 install djongo
 
-2. 
+2. Integrate the Mongodb
+    So open <i>settings.py</i> and change declaration of <b>DATABASES</b>:
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'djongo',
+                'NAME': 'bezkoder_db',
+                'HOST': '127.0.0.1',
+                'PORT': 27017,
+            }
+        }
+
+<h1>Configure CORS and middleware</h1>
+
+1. Install CORS Header     
+
+       $ pip3 install django-cors-headers
+
+2. Add CORS to settings.py
+
+        INSTALLED_APPS = [
+            ...
+            # CORS
+            'corsheaders',
+        ]    
+
+3. You also need to add a middleware class to listen in on responses:
+
+        MIDDLEWARE = [
+            ...
+            # CORS
+            'corsheaders.middleware.CorsMiddleware',
+            'django.middleware.common.CommonMiddleware',
+        ]
+4. Set CORS_ORIGIN_ALLOW_ALL and add the host to CORS_ORIGIN_WHITELIST
+
+        CORS_ORIGIN_ALLOW_ALL = False
+        CORS_ORIGIN_WHITELIST = (
+            'http://localhost:8081',
+        )
+
+5. Create a new model and create migrations
+6. Go to the mongodb and check if your db was created or not
+
