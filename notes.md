@@ -356,4 +356,59 @@ Django REST framework helps us to build RESTful Web Services flexibly.
 
 5. Create a new model and create migrations
 6. Go to the mongodb and check if your db was created or not
+<br>
+<br>
+<br>
+<h1>Create Serializer class for Data Model
+</h1>
+
+1. Let’s create TutorialSerializer class that will manage serialization and deserialization from JSON.
+It inherit from <b>rest_framework.serializers.ModelSerializer</b> superclass which automatically populates a set of fields and default validators. We need to specify the model class here.
+
+2. Create the <b>tutorial/serializer.py</b> file.
+
+3. Create a model for serializer
+
+        from rest_framework import serializers 
+        from tutorials.models import Tutorial
+        
+        
+        class TutorialSerializer(serializers.ModelSerializer):
+        
+            class Meta:
+                model = Tutorial
+                fields = ('id',
+                        'title',
+                        'description',
+                        'published')
+
+4. In the inner class Meta, we declare 2 attributes:
+
+    * <b>model</b>: the model for Serializer
+    * <b>fields</b>: a tuple of field names to be included in the serialization
+
+<br>
+<br>
+
+# Define Routes for Views
+
+Let determine how the server will response for HTTP request (GET, POST, PUT, DELETE) with some endpoints. We’re gonna define the routes:
+
+* /api/tutorials: GET, POST, DELETE
+* /api/tutorials/:id: GET, PUT, DELETE
+* /api/tutorials/published: GET
+
+1. Create tutorials/urls.py
+
+2. Add the routes 
+        
+        from django.conf.urls import url
+        from djangorestapimongo.tutorials import views
+
+        urlpatterns = [
+            url(r'^api/tutorials$', views.tutorial_list),
+            url(r'^api/tutorials/(?P<pk>[0-9]+)$', views.tutorial_detail),
+            url(r'^api/tutorials/published$', views.tutorial_list_published)
+        ]
+3. Add the url in main djangorestapimongo/urls.py
 
