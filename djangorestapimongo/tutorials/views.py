@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.http.response import HttpResponse, JsonResponse
 
@@ -36,9 +36,12 @@ def newTutorial(request):
 @api_view(['GET'])
 def getTutorialDetailsById(request, id):
     if request.method == 'GET':
-        tutorial = Tutorial.objects.get(pk=id)
-        tutorial_serializer = TutorialSerializer(tutorial)
-        return JsonResponse(tutorial_serializer.data, status=status.HTTP_200_OK)
+        try:
+            tutorial = get_object_or_404(Tutorial, pk=id)
+            tutorial_serializer = TutorialSerializer(tutorial)
+            return JsonResponse(tutorial_serializer.data, status=status.HTTP_200_OK)
+        except Tutorial.DoesNotExist:
+            return JsonResponse('Error', status=status.HTTP_400_BAD_REQUEST)
     return JsonResponse('Error', status=status.HTTP_400_BAD_REQUEST)
 
 
