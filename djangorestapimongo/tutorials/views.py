@@ -15,10 +15,6 @@ from tutorials.serializers import TutorialSerializer
 def getAllAvailableTutorials(request):
     if request.method == 'GET':
         tutorials = Tutorial.objects.all()
-        title = request.GET.get('title', None)
-        if title is not None:
-            tutorials = tutorials.filter(title__icontains=title)
-
         tutorial_Serializer = TutorialSerializer(tutorials, many=True)
         return JsonResponse(tutorial_Serializer.data, safe=False)
 
@@ -40,7 +36,7 @@ def newTutorial(request):
 @api_view(['GET'])
 def getTutorialDetailsById(request, id):
     if request.method == 'GET':
-        tutorial = Tutorial.objects.get(id=id)
+        tutorial = Tutorial.objects.get(pk=id)
         tutorial_serializer = TutorialSerializer(tutorial)
         return JsonResponse(tutorial_serializer.data, status=status.HTTP_200_OK)
     return JsonResponse('Error', status=status.HTTP_400_BAD_REQUEST)
@@ -58,25 +54,21 @@ def getTutorialDetailsByName(request):
     return JsonResponse('Error', status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST', 'DELETE'])
-def tutorial_list(request):
-    """ Retrieve objects (with condition)
-        Retrieve all Tutorials/ find by title from MongoDB database
-    """
-    if request.method == 'GET':
-        tutorial = Tutorial.objects.all()
-        title = request.GET.get('title', None)
-    pass
+# Update an object by id
+@api_view(['POST'])
+def updateExistingObject(request, id):
+    tutorial = Tutorial.objects.get(id=id)
+    tutorial_data = JSONParser().parse(request)
+    tutorial_serializer = TutorialSerializer(tutorial, data=tutorial_data)
+    if tutorial_serializer.is_valid():
+        tutorial_serializer.save()
+        return JsonResponse(tutorial_serializer.data, safe=False, status=status.HTTP_200_OK)
+    return JsonResponse(tutorial_serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def tutorial_detail(request, id):
-    try:
-        tutorial = Tutorial.objects.get(pk=id)
-    except Tutorial.DoesNotExist:
-        return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
-
-@api_view(['GET'])
-def tutorial_list_published(request):
-    pass
+# Delete an existing object
+@api_view(['DELETE'])
+def deleteExistingObject(request, id):
+    tutorial = Tutorial.objects.get(id=id)
+    tutorial.delete()
+    return JsonResponse({'Message: Tutorial was deleted successfully'}, safe=False, status=status.HTTP_200_OK)

@@ -6,9 +6,10 @@ urlpatterns = [
     url(r'^api/newTutorial$', views.newTutorial),
     url(r'^api/getTutorialDetailsById/(?P<id>[0-9]+)$',
         views.getTutorialDetailsById),
+    url(r'^api/updateExistingObject/(?P<id>[0-9]+)$',
+        views.updateExistingObject),
     url(r'^api/getTutorialDetailsByName$',
         views.getTutorialDetailsByName),
-    # url(r'^api/tutorials$', views.tutorial_list),
-    # url(r'^api/tutorials/(?P<pk>[0-9]+)$', views.tutorial_detail),
-    # url(r'^api/tutorials/published$', views.tutorial_list_published)
+    url(r'^api/deleteExistingObject/(?P<id>[0-9]+)$',
+        views.deleteExistingObject),
 ]
